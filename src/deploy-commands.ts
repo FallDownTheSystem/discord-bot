@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
-import fs from "fs";
+import * as fs from "fs";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 
@@ -19,12 +19,16 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
 // Register all of our commands
-rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
+rest
+	.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
+		body: commands,
+	})
 	.then(() => console.log("Successfully registered application commands."))
 	.catch(console.error);
 // Register all of our command permissions
-rest.put(Routes.guildApplicationCommandsPermissions(process.env.CLIENT_ID, process.env.GUILD_ID), {
-	body: permissions,
-})
+rest
+	.put(Routes.guildApplicationCommandsPermissions(process.env.CLIENT_ID, process.env.GUILD_ID), {
+		body: permissions,
+	})
 	.then(() => console.log("Successfully registered application permissions."))
 	.catch(console.error);
